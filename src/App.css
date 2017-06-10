@@ -1,0 +1,37 @@
+.App {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.App-header {
+    background-color: #222;
+    height: 2em;
+    color: white;
+    width: 100%;
+    padding: 1em 0;
+}
+
+.App-controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:500px;
+}
+
+.Field {
+    display: flex;
+    flex-direction: row;
+    width: 500px;
+    height: 500px;
+    border: 1px solid rebeccapurple;
+}
+
+.Cell {
+    width: 25px;
+    height: 25px;
+    outline: 1px solid deepskyblue;
+}
