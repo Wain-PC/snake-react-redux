@@ -3,7 +3,6 @@ import {TYPES, DIRECTIONS, BANNED_DIRECTIONS} from './constants';
 const getRandomCoordinate = (fieldSize) => Math.round(Math.random() * (fieldSize - 1));
 
 const getNewSnakeHead = (snake, direction) => {
-	console.log(snake, direction);
 	const head = snake[0];
 	switch (direction) {
 		case DIRECTIONS.UP: {
@@ -23,6 +22,8 @@ const getNewSnakeHead = (snake, direction) => {
 		}
 	}
 };
+
+const compareCoords = (item1, item2) => item1.x === item2.x && item1.y === item2.y;
 
 export const createField = (size) => {
 	let field = [];
@@ -80,9 +81,9 @@ export const canChangeDirection = (newDirection, oldDirection) => BANNED_DIRECTI
 
 export const canPerformMove = (fieldSize, snake, direction) => {
 	const newHead = getNewSnakeHead(snake, direction);
-	return newHead.x >= 0 && newHead.x < fieldSize && newHead.y >= 0 && newHead.y < fieldSize;
+	return newHead.x >= 0 && newHead.x < fieldSize && newHead.y >= 0 && newHead.y < fieldSize && !snake.slice(0, -1).some((snakePiece) => compareCoords(snakePiece, newHead));
 };
 export const willEatFood = (snake, direction, food) => {
 	const newHead = getNewSnakeHead(snake, direction);
-	return newHead.x === food.x && newHead.y === food.y;
+	return compareCoords(newHead, food);
 };

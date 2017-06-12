@@ -13,8 +13,6 @@ const CHANGE_DIRECTION = 'snake/game/CHANGE_DIRECTION';
 const defaultState = {
 	size: 20,
 	started: false,
-	paused: false,
-	stepTime: 1000,
 	field: utils.createField(20),
 	direction: 0
 };
@@ -24,15 +22,15 @@ export default function reducer(state = defaultState, action = {}) {
 	let newState;
 	switch (action.type) {
 		case START: {
-			newState = Object.assign({}, state, {started: true, paused: false});
+			newState = Object.assign({}, state, {started: true});
 			break;
 		}
 		case STOP: {
-			newState = Object.assign({}, state, {started: false, paused: false});
+			newState = Object.assign({}, state, {started: false});
 			break;
 		}
 		case CREATE_SNAKE: {
-			newState = Object.assign({}, state, {snake: utils.createSnake(state.size)});
+			newState = Object.assign({}, state, {snake: utils.createSnake(state.size, 8)});
 			break;
 		}
 		case SPAWN_FOOD: {
@@ -55,9 +53,19 @@ export default function reducer(state = defaultState, action = {}) {
 
 // Action Creators
 export function start() {
-	return (dispatch) => {
+	return (dispatch, getState) => {
 		//Dispatch start
 		dispatch({type: START});
+		//Run main cycle until the game has been stopped
+		const run = () => {
+			setTimeout(() => {
+				if (getState().game.started) {
+					dispatch(move());
+					run();
+				}
+			}, 500);
+		};
+		run();
 	};
 }
 
@@ -101,6 +109,5 @@ export function changeDirection(direction) {
 		if (utils.canChangeDirection(direction, state.direction)) {
 			return dispatch({type: CHANGE_DIRECTION, payload: direction});
 		}
-		return dispatch({type: STOP});
 	}
 }
