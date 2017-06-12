@@ -7,7 +7,6 @@ const CREATE_FIELD = 'snake/game/CREATE_FIELD';
 const CREATE_SNAKE = 'snake/game/CREATE_SNAKE';
 const SPAWN_FOOD = 'snake/game/SPAWN_FOOD';
 const STOP = 'snake/game/STOP';
-const UPDATE_FRAME = 'snake/game/UPDATE_FRAME';
 const MOVE_SNAKE = 'snake/game/MOVE_SNAKE';
 const CHANGE_DIRECTION = 'snake/game/CHANGE_DIRECTION';
 
@@ -45,7 +44,7 @@ export default function reducer(state = defaultState, action = {}) {
 			break;
 		}
 		case MOVE_SNAKE: {
-			newState = Object.assign({}, state, {snake: utils.moveSnake(state.snake, state.direction)});
+			newState = Object.assign({}, state, {snake: utils.moveSnake(state.snake, state.direction, action.payload)});
 			break;
 		}
 		default:
@@ -56,9 +55,15 @@ export default function reducer(state = defaultState, action = {}) {
 
 // Action Creators
 export function start() {
-	return (dispatch, getState) => {
+	return (dispatch) => {
 		//Dispatch start
 		dispatch({type: START});
+	};
+}
+
+
+export function init() {
+	return (dispatch) => {
 		dispatch({type: CREATE_FIELD});
 		dispatch({type: CREATE_SNAKE});
 		dispatch({type: SPAWN_FOOD});
@@ -69,6 +74,7 @@ export function start() {
 export function stop() {
 	return (dispatch) => {
 		dispatch({type: STOP});
+		dispatch(init());
 	}
 }
 
@@ -76,7 +82,11 @@ export function move() {
 	return (dispatch, getState) => {
 		const state = getState().game;
 		if (utils.canPerformMove(state.field.length, state.snake, state.direction)) {
-			dispatch({type: MOVE_SNAKE});
+			const willEat = utils.willEatFood(state.snake, state.direction, state.food);
+			dispatch({type: MOVE_SNAKE, payload: willEat});
+			if (willEat) {
+				dispatch({type: SPAWN_FOOD});
+			}
 		}
 		else {
 			dispatch(stop());

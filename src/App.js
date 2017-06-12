@@ -2,11 +2,16 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import './App.css';
 import Field from './components/Field';
-import {start, stop, changeDirection, move} from './ducks/game';
+import {start, stop, changeDirection, move, init} from './ducks/game';
 import Button from './components/Button';
 import {DIRECTIONS} from './utils/constants';
 
 class App extends Component {
+
+	componentWillMount() {
+		this.props.dispatch(init());
+	}
+
 	render() {
 		return (
 			<div className="App">

@@ -65,10 +65,12 @@ export const updateField = (size, snake, food) => {
 	return field;
 };
 
-export const moveSnake = (snake, direction) => {
+export const moveSnake = (snake, direction, expand) => {
 	snake = Object.assign([], snake);
 	//Remove tail
-	snake.pop();
+	if (!expand) {
+		snake.pop();
+	}
 	//Add new value before the head
 	snake.unshift(getNewSnakeHead(snake, direction));
 	return snake;
@@ -79,4 +81,8 @@ export const canChangeDirection = (newDirection, oldDirection) => BANNED_DIRECTI
 export const canPerformMove = (fieldSize, snake, direction) => {
 	const newHead = getNewSnakeHead(snake, direction);
 	return newHead.x >= 0 && newHead.x < fieldSize && newHead.y >= 0 && newHead.y < fieldSize;
+};
+export const willEatFood = (snake, direction, food) => {
+	const newHead = getNewSnakeHead(snake, direction);
+	return newHead.x === food.x && newHead.y === food.y;
 };
