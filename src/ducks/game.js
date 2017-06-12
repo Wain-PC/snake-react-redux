@@ -14,7 +14,8 @@ const defaultState = {
 	size: 20,
 	started: false,
 	field: utils.createField(20),
-	direction: 0
+	direction: 0,
+	score: -1 //Will turn to 0 automatically as soon as first food piece has been placed
 };
 
 // Reducer
@@ -26,15 +27,15 @@ export default function reducer(state = defaultState, action = {}) {
 			break;
 		}
 		case STOP: {
-			newState = Object.assign({}, state, {started: false});
+			newState = Object.assign({}, state, {started: false, score: -1});
 			break;
 		}
 		case CREATE_SNAKE: {
-			newState = Object.assign({}, state, {snake: utils.createSnake(state.size, 8)});
+			newState = Object.assign({}, state, {snake: utils.createSnake(state.size, 3)});
 			break;
 		}
 		case SPAWN_FOOD: {
-			newState = Object.assign({}, state, {food: utils.spawnFood(state.size)});
+			newState = Object.assign({}, state, {food: utils.spawnFood(state.size), score: state.score + 1});
 			break;
 		}
 		case CHANGE_DIRECTION: {
