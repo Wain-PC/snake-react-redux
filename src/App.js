@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import './App.css';
 import Field from './components/Field';
-import {start, stop, changeDirection, move, init} from './ducks/game';
+import {start, stop, changeDirection, init} from './ducks/game';
 import Button from './components/Button';
 import useKeyboard from './utils/keyboard';
 
