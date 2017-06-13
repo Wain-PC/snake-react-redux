@@ -1,5 +1,6 @@
 // game.js
 import * as utils from '../utils/utils';
+import {DIRECTIONS} from '../utils/constants';
 
 // Actions
 const START = 'snake/game/START';
@@ -14,8 +15,8 @@ const defaultState = {
 	size: 20,
 	started: false,
 	field: utils.createField(20),
-	direction: 0,
-	bufferedDirection: 0,
+	direction: DIRECTIONS.UP,
+	bufferedDirection: DIRECTIONS.UP,
 	score: -1 //Will turn to 0 automatically as soon as first food piece has been placed
 };
 
@@ -28,7 +29,7 @@ export default function reducer(state = defaultState, action = {}) {
 			break;
 		}
 		case STOP: {
-			newState = Object.assign({}, state, {started: false, score: -1});
+			newState = Object.assign({}, state, defaultState);
 			break;
 		}
 		case CREATE_SNAKE: {
@@ -77,7 +78,6 @@ export function init() {
 		dispatch({type: CREATE_FIELD});
 		dispatch({type: CREATE_SNAKE});
 		dispatch({type: SPAWN_FOOD});
-		dispatch({type: CHANGE_DIRECTION, payload: 0});
 	};
 }
 
