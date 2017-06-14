@@ -18,7 +18,7 @@ class App extends Component {
 			<div className="App">
 				<div className="App-header">Snake Game</div>
 				<div>Score: {this.props.score}</div>
-				<Field size={this.props.size}/>
+				<Field field={this.props.field}/>
 				<div className="App-controls">
 					<Button click={() => this.props.dispatch(start())} disabled={this.props.started}>Start!</Button>
 					<Button click={() => this.props.dispatch(stop())} disabled={!this.props.started}>Stop</Button>
@@ -29,3 +29,4 @@ class App extends Component {
 }
 
 export default connect((state) => state.game)(App);
+export {App};

@@ -1,5 +1,5 @@
 import React from 'react';
-import {TYPES} from '../utils/constants';
+import {TYPES} from '../../utils/constants';
 
 const Cell = ({value}) => {
 	let color = 'transparent';

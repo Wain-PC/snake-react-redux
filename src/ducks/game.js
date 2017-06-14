@@ -4,7 +4,6 @@ import {DIRECTIONS} from '../utils/constants';
 
 // Actions
 const START = 'snake/game/START';
-const CREATE_FIELD = 'snake/game/CREATE_FIELD';
 const CREATE_SNAKE = 'snake/game/CREATE_SNAKE';
 const SPAWN_FOOD = 'snake/game/SPAWN_FOOD';
 const STOP = 'snake/game/STOP';
@@ -75,7 +74,6 @@ export function start() {
 
 export function init() {
 	return (dispatch) => {
-		dispatch({type: CREATE_FIELD});
 		dispatch({type: CREATE_SNAKE});
 		dispatch({type: SPAWN_FOOD});
 	};

@@ -1,9 +1,8 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import Cell from './Cell';
+import Cell from '../Cell';
 
 const Field = ({field}) => {
-	const size = field.length;
+	const size = field ? field.length : 0;
 	let rows = [];
 	for (let i = 0; i < size; i++) {
 		let cells = [];
@@ -18,6 +17,4 @@ const Field = ({field}) => {
 	return <div className="Field">{rows}</div>
 };
 
-const mapStateToProps = (state) => {return {field: state.game.field}};
-
-export default connect(mapStateToProps)(Field);
+export default Field;
