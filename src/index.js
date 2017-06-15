@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 import {createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import game from './ducks/game';
+import game from './ducks/game/game';
 
 const store = createStore(combineReducers({game}),
 	compose(applyMiddleware(thunk, logger),

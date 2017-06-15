@@ -36,7 +36,7 @@ export const createField = (size) => {
 	return field;
 };
 
-export const createSnake = (fieldSize, length = 3) => {
+export const createSnake = (fieldSize, length) => {
 	const headPos = Math.floor(fieldSize / 2);
 	let snakeCoords = [];
 	for (let i = 0; i < length; i++) {

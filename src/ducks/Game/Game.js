@@ -1,17 +1,18 @@
-// game.js
-import * as utils from '../utils/utils';
-import {DIRECTIONS} from '../utils/constants';
+// Game.js
+import * as utils from '../../utils/utils';
+import {DIRECTIONS} from '../../utils/constants';
 
 // Actions
-const START = 'snake/game/START';
-const CREATE_SNAKE = 'snake/game/CREATE_SNAKE';
-const SPAWN_FOOD = 'snake/game/SPAWN_FOOD';
-const STOP = 'snake/game/STOP';
-const MOVE_SNAKE = 'snake/game/MOVE_SNAKE';
-const CHANGE_DIRECTION = 'snake/game/CHANGE_DIRECTION';
+export const START = 'snake/game/START';
+export const CREATE_SNAKE = 'snake/game/CREATE_SNAKE';
+export const SPAWN_FOOD = 'snake/game/SPAWN_FOOD';
+export const STOP = 'snake/game/STOP';
+export const MOVE_SNAKE = 'snake/game/MOVE_SNAKE';
+export const CHANGE_DIRECTION = 'snake/game/CHANGE_DIRECTION';
 
 const defaultState = {
 	size: 20,
+	snakeSize: 3,
 	started: false,
 	field: utils.createField(20),
 	direction: DIRECTIONS.UP,
@@ -32,7 +33,7 @@ export default function reducer(state = defaultState, action = {}) {
 			break;
 		}
 		case CREATE_SNAKE: {
-			newState = Object.assign({}, state, {snake: utils.createSnake(state.size, 3)});
+			newState = Object.assign({}, state, {snake: utils.createSnake(state.size, state.snakeSize)});
 			break;
 		}
 		case SPAWN_FOOD: {
