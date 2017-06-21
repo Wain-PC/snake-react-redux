@@ -14,7 +14,6 @@ const defaultState = {
 	size: 20,
 	snakeSize: 3,
 	started: false,
-	field: utils.createField(20),
 	direction: DIRECTIONS.UP,
 	bufferedDirection: DIRECTIONS.UP,
 	score: -1 //Will turn to 0 automatically as soon as first food piece has been placed
@@ -45,13 +44,16 @@ export default function reducer(state = defaultState, action = {}) {
 			break;
 		}
 		case MOVE_SNAKE: {
-			newState = Object.assign({}, state, {direction: state.bufferedDirection, snake: utils.moveSnake(state.snake, state.bufferedDirection, action.payload)});
+			newState = Object.assign({}, state, {
+				direction: state.bufferedDirection,
+				snake: utils.moveSnake(state.snake, state.bufferedDirection, action.payload)
+			});
 			break;
 		}
 		default:
 			newState = state;
 	}
-	return Object.assign(newState, {field: utils.updateField(newState.size, newState.snake, newState.food)});
+	return newState;
 }
 
 // Action Creators
@@ -90,7 +92,7 @@ export function stop() {
 export function move() {
 	return (dispatch, getState) => {
 		const state = getState().game;
-		if (utils.canPerformMove(state.field.length, state.snake, state.bufferedDirection)) {
+		if (utils.canPerformMove(state.size, state.snake, state.bufferedDirection)) {
 			const willEat = utils.willEatFood(state.snake, state.bufferedDirection, state.food);
 			dispatch({type: MOVE_SNAKE, payload: willEat});
 			if (willEat) {
@@ -98,7 +100,7 @@ export function move() {
 			}
 		}
 		else {
-			dispatch(stop());
+			dispatch();
 		}
 
 	}

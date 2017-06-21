@@ -1,8 +1,9 @@
 import React from 'react';
 import Cell from '../Cell';
+import {createField, updateField} from '../../utils/utils';
 
-const Field = ({field}) => {
-	const size = field ? field.length : 0;
+const Field = ({size, snake, food}) => {
+	const field = updateField(size, snake, food);
 	let rows = [];
 	for (let i = 0; i < size; i++) {
 		let cells = [];

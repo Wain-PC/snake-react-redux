@@ -80,6 +80,9 @@ export const moveSnake = (snake, direction, expand) => {
 export const canChangeDirection = (newDirection, oldDirection) => BANNED_DIRECTIONS[newDirection] !== oldDirection;
 
 export const canPerformMove = (fieldSize, snake, direction) => {
+	if (!snake) {
+		return false;
+	}
 	const newHead = getNewSnakeHead(snake, direction);
 	return newHead.x >= 0 && newHead.x < fieldSize && newHead.y >= 0 && newHead.y < fieldSize && !snake.slice(0, -1).some((snakePiece) => compareCoords(snakePiece, newHead));
 };

@@ -14,14 +14,15 @@ class App extends Component {
 	}
 
 	render() {
+		const {size, snake, food, score, dispatch, started} = this.props;
 		return (
 			<div className="App">
 				<div className="App-header">Snake Game</div>
-				<div>Score: {this.props.score}</div>
-				<Field field={this.props.field}/>
+				<div>Score: {score}</div>
+				<Field size={size} snake={snake} food={food}/>
 				<div className="App-controls">
-					<Button click={() => this.props.dispatch(start())} disabled={this.props.started}>Start!</Button>
-					<Button click={() => this.props.dispatch(stop())} disabled={!this.props.started}>Stop</Button>
+					<Button click={() => dispatch(start())} disabled={started}>Start!</Button>
+					<Button click={() => dispatch(stop())} disabled={!started}>Stop</Button>
 				</div>
 			</div>
 		);

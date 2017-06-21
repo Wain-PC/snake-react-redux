@@ -5,6 +5,7 @@ import reducer, {
 	changeDirection,
 	CREATE_SNAKE,
 	init,
+	MOVE_SNAKE,
 	move,
 	SPAWN_FOOD,
 	start,
@@ -36,22 +37,24 @@ describe('Game', () => {
 		});
 
 		it('should handle "START" action correctly', () => {
-			expect(reducer(initialState, { type: START })).toEqual(extend({ started: true }));
+			expect(reducer(initialState, {type: START})).toEqual(extend({started: true}));
 		});
 
 		it('should handle "STOP" action correctly', () => {
-			expect(reducer(extend({ started: true }), { type: STOP })).toEqual(initialState);
+			expect(reducer(extend({started: true}), {type: STOP})).toEqual(initialState);
 		});
 
-		it.skip('should handle "CREATE_SNAKE" action correctly', () => {
-			expect(reducer(initialState, { type: CREATE_SNAKE })).toEqual(extend({ snake: utils.createSnake(initialState.size, initialState.snakeSize) }));
+		it('should handle "CREATE_SNAKE" action correctly', () => {
+			expect(reducer(initialState, {type: CREATE_SNAKE})).toEqual(extend({snake: utils.createSnake(initialState.size, initialState.snakeSize)}));
 		});
 
-		it.skip('should handle "SPAWN_FOOD" action correctly', () => {
-			expect(reducer(initialState, { type: SPAWN_FOOD })).toEqual(extend({
-				food: utils.spawnFood(initialState.size),
-				score: 0
-			}));
+		it('should handle "SPAWN_FOOD" action correctly', () => {
+			const result = reducer(initialState, {type: SPAWN_FOOD});
+			expect(result.score).toEqual(0);
+			expect(result.food.x).toBeGreaterThanOrEqual(0);
+			expect(result.food.x).toBeLessThan(initialState.size);
+			expect(result.food.y).toBeGreaterThanOrEqual(0);
+			expect(result.food.y).toBeLessThan(initialState.size);
 		});
 
 		it('should handle "CHANGE_DIRECTION" action correctly', () => {
@@ -59,7 +62,7 @@ describe('Game', () => {
 			keys.forEach((key) => expect(reducer(initialState, {
 				type: CHANGE_DIRECTION,
 				payload: DIRECTIONS[key]
-			})).toEqual(extend({ bufferedDirection: DIRECTIONS[key] })));
+			})).toEqual(extend({bufferedDirection: DIRECTIONS[key]})));
 		});
 
 		it.skip('should handle "MOVE_SNAKE" action correctly', () => {
@@ -72,7 +75,7 @@ describe('Game', () => {
 
 		beforeEach(() => {
 			dispatch = jest.fn();
-			getState = () => initialState;
+			getState = () => ({game: initialState});
 		});
 
 		describe('init', () => {
@@ -86,8 +89,8 @@ describe('Game', () => {
 
 			it("should call appropriate actions", () => {
 				const fn = init()(dispatch, getState);
-				expect(dispatch.mock.calls[0][0]).toEqual({ type: CREATE_SNAKE });
-				expect(dispatch.mock.calls[1][0]).toEqual({ type: SPAWN_FOOD });
+				expect(dispatch.mock.calls[0][0]).toEqual({type: CREATE_SNAKE});
+				expect(dispatch.mock.calls[1][0]).toEqual({type: SPAWN_FOOD});
 			});
 		});
 
@@ -102,7 +105,7 @@ describe('Game', () => {
 
 			it("should call appropriate actions", () => {
 				const fn = start()(dispatch, getState);
-				expect(dispatch.mock.calls[0][0]).toEqual({ type: START });
+				expect(dispatch.mock.calls[0][0]).toEqual({type: START});
 			});
 		});
 
@@ -117,7 +120,7 @@ describe('Game', () => {
 
 			it("should call appropriate actions", () => {
 				const fn = stop()(dispatch, getState);
-				expect(dispatch.mock.calls[0][0]).toEqual({ type: STOP });
+				expect(dispatch.mock.calls[0][0]).toEqual({type: STOP});
 			});
 		});
 
@@ -133,7 +136,7 @@ describe('Game', () => {
 			//TODO: doesn't work as expected
 			it.skip("should call appropriate actions", () => {
 				const fn = move()(dispatch, getState);
-				expect(dispatch.mock.calls[0][0]).toEqual({ type: MOVE });
+				expect(dispatch.mock.calls[0][0]).toEqual({type: MOVE_SNAKE});
 			});
 		});
 
@@ -147,9 +150,9 @@ describe('Game', () => {
 			});
 
 			//TODO: doesn't work as expected
-			it.skip("should call appropriate actions", () => {
+			it("should call appropriate actions", () => {
 				const fn = changeDirection(DIRECTIONS.LEFT)(dispatch, getState);
-				expect(dispatch.mock.calls[0][0]).toEqual({ type: CHANGE_DIRECTION, payload: DIRECTIONS.LEFT });
+				expect(dispatch.mock.calls[0][0]).toEqual({type: CHANGE_DIRECTION, payload: DIRECTIONS.LEFT});
 			});
 		});
 
