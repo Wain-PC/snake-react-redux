@@ -1,4 +1,4 @@
-import {TYPES, DIRECTIONS, BANNED_DIRECTIONS} from './constants';
+import {BANNED_DIRECTIONS, DIRECTIONS, TYPES} from "./constants";
 
 const getRandomCoordinate = (fieldSize) => Math.round(Math.random() * (fieldSize - 1));
 
@@ -6,19 +6,19 @@ const getNewSnakeHead = (snake, direction) => {
 	const head = snake[0];
 	switch (direction) {
 		case DIRECTIONS.UP: {
-			return {x: head.x, y: head.y - 1};
+			return { x: head.x, y: head.y - 1 };
 		}
 		case DIRECTIONS.DOWN: {
-			return {x: head.x, y: head.y + 1};
+			return { x: head.x, y: head.y + 1 };
 		}
 		case DIRECTIONS.LEFT: {
-			return {x: head.x - 1, y: head.y};
+			return { x: head.x - 1, y: head.y };
 		}
 		case DIRECTIONS.RIGHT: {
-			return {x: head.x + 1, y: head.y};
+			return { x: head.x + 1, y: head.y };
 		}
 		default: {
-			return {x: head.x, y: head.y};
+			return { x: head.x, y: head.y };
 		}
 	}
 };
@@ -40,7 +40,7 @@ export const createSnake = (fieldSize, length) => {
 	const headPos = Math.floor(fieldSize / 2);
 	let snakeCoords = [];
 	for (let i = 0; i < length; i++) {
-		snakeCoords.push({x: headPos, y: headPos - i});
+		snakeCoords.push({ x: headPos, y: headPos - i });
 	}
 	return snakeCoords.reverse();
 };
@@ -49,7 +49,7 @@ export const createSnake = (fieldSize, length) => {
 export const spawnFood = (fieldSize) => {
 	const x = getRandomCoordinate(fieldSize);
 	const y = getRandomCoordinate(fieldSize);
-	return {x, y};
+	return { x, y };
 };
 
 export const updateField = (size, snake, food) => {
@@ -88,5 +88,5 @@ export const canPerformMove = (fieldSize, snake, direction) => {
 };
 export const willEatFood = (snake, direction, food) => {
 	const newHead = getNewSnakeHead(snake, direction);
-	return compareCoords(newHead, food);
+	return food ? compareCoords(newHead, food) : false;
 };
