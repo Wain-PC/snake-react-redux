@@ -1,6 +1,6 @@
 import React from 'react';
 import Cell from '../Cell';
-import {createField, updateField} from '../../utils/utils';
+import {updateField} from '../../utils/utils';
 
 const Field = ({size, snake, food}) => {
 	const field = updateField(size, snake, food);

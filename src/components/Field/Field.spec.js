@@ -4,7 +4,6 @@ import {expect} from 'chai';
 
 import Field from '../Field';
 import Cell from '../Cell';
-import {createField} from '../../utils/utils';
 
 describe('Field', () => {
 

@@ -23,7 +23,6 @@ describe('Game', () => {
 		size: 20,
 		snakeSize: 3,
 		started: false,
-		field: utils.createField(20),
 		direction: DIRECTIONS.UP,
 		bufferedDirection: DIRECTIONS.UP,
 		score: -1

@@ -25,7 +25,7 @@ const getNewSnakeHead = (snake, direction) => {
 
 const compareCoords = (item1, item2) => item1.x === item2.x && item1.y === item2.y;
 
-export const createField = (size) => {
+const createField = (size) => {
 	let field = [];
 	for (let i = 0; i < size; i++) {
 		field[i] = [];
