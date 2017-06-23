@@ -100,7 +100,7 @@ export function move() {
 			}
 		}
 		else {
-			dispatch();
+			dispatch(stop());
 		}
 
 	}
