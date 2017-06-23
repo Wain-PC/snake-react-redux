@@ -5,7 +5,8 @@ const getRandomCoordinate = (fieldSize) => Math.round(Math.random() * (fieldSize
 const getNewSnakeHead = (snake, direction) => {
 	const head = snake[0];
 	switch (direction) {
-		case DIRECTIONS.UP: {
+		case DIRECTIONS.UP:
+		default: {
 			return { x: head.x, y: head.y - 1 };
 		}
 		case DIRECTIONS.DOWN: {
@@ -17,11 +18,10 @@ const getNewSnakeHead = (snake, direction) => {
 		case DIRECTIONS.RIGHT: {
 			return { x: head.x + 1, y: head.y };
 		}
-		default: {
-			return { x: head.x, y: head.y };
-		}
 	}
 };
+
+const objectInSnakePath = (snake, obj) => snake ? snake.some((snakePiece) => compareCoords(snakePiece, obj)) : false;
 
 const compareCoords = (item1, item2) => item1.x === item2.x && item1.y === item2.y;
 
@@ -36,20 +36,22 @@ const createField = (size) => {
 	return field;
 };
 
-export const createSnake = (fieldSize, length) => {
-	const headPos = Math.floor(fieldSize / 2);
+export const createSnake = (fieldSize, length = 1, x = Math.floor(fieldSize / 2), y = Math.floor(fieldSize / 2)) => {
 	let snakeCoords = [];
 	for (let i = 0; i < length; i++) {
-		snakeCoords.push({ x: headPos, y: headPos - i });
+		snakeCoords.push({ x, y: y + i });
 	}
-	return snakeCoords.reverse();
+	return snakeCoords;
 };
 
 
-export const spawnFood = (fieldSize) => {
-	const x = getRandomCoordinate(fieldSize);
-	const y = getRandomCoordinate(fieldSize);
-	return { x, y };
+export const spawnFood = (fieldSize, snake) => {
+	const food = {
+		x: getRandomCoordinate(fieldSize),
+		y: getRandomCoordinate(fieldSize)
+	};
+
+	return objectInSnakePath(snake, food) ? spawnFood.call(null, fieldSize, snake) : food;
 };
 
 export const updateField = (size, snake, food) => {
@@ -68,6 +70,9 @@ export const updateField = (size, snake, food) => {
 
 export const moveSnake = (snake, direction, expand) => {
 	snake = Object.assign([], snake);
+	if (direction === undefined) {
+		return snake;
+	}
 	//Remove tail
 	if (!expand) {
 		snake.pop();
@@ -84,9 +89,12 @@ export const canPerformMove = (fieldSize, snake, direction) => {
 		return false;
 	}
 	const newHead = getNewSnakeHead(snake, direction);
-	return newHead.x >= 0 && newHead.x < fieldSize && newHead.y >= 0 && newHead.y < fieldSize && !snake.slice(0, -1).some((snakePiece) => compareCoords(snakePiece, newHead));
+	return newHead.x >= 0 && newHead.x < fieldSize && newHead.y >= 0 && newHead.y < fieldSize && !objectInSnakePath(snake.slice(0, -1), newHead);
 };
 export const willEatFood = (snake, direction, food) => {
+	if (!snake || direction === undefined) {
+		return false;
+	}
 	const newHead = getNewSnakeHead(snake, direction);
 	return food ? compareCoords(newHead, food) : false;
 };
