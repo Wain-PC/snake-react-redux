@@ -1,4 +1,4 @@
-import {DIRECTIONS} from './constants';
+import {DIRECTIONS} from "./constants";
 
 const getDirectionFromKeyEvent = (e) => {
 	switch (e.keyCode) {
@@ -10,7 +10,14 @@ const getDirectionFromKeyEvent = (e) => {
 			return DIRECTIONS.RIGHT;
 		case 40:
 			return DIRECTIONS.DOWN;
+		default:
+			return null;
 	}
 };
 
-export default (cb) => document.addEventListener('keydown', (e) => cb(getDirectionFromKeyEvent(e)));
+export default (cb) => document.addEventListener('keydown', (e) => {
+	const direction = getDirectionFromKeyEvent(e);
+	if (direction !== null) {
+		cb(direction);
+	}
+});
