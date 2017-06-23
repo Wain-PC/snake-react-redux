@@ -29,5 +29,6 @@
     "collectCoverageFrom": [
       "src/{components,ducks,utils}/**/*.js"
     ]
-  }
+  },
+  "homepage": "https://wain-pc.github.io/snake-react-redux"
 }
