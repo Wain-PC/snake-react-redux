@@ -64,7 +64,7 @@ export function start() {
 		//Run main cycle until the game has been stopped
 		const run = () => {
 			setTimeout(() => {
-				if (getState().game.started) {
+				if (getState().started) {
 					dispatch(move());
 					run();
 				}
@@ -91,7 +91,7 @@ export function stop() {
 
 export function move() {
 	return (dispatch, getState) => {
-		const state = getState().game;
+		const state = getState();
 		if (utils.canPerformMove(state.size, state.snake, state.bufferedDirection)) {
 			const willEat = utils.willEatFood(state.snake, state.bufferedDirection, state.food);
 			dispatch({type: MOVE_SNAKE, payload: willEat});
@@ -108,7 +108,7 @@ export function move() {
 
 export function changeDirection(direction) {
 	return (dispatch, getState) => {
-		const state = getState().game;
+		const state = getState();
 		if (utils.canChangeDirection(direction, state.direction)) {
 			return dispatch({type: CHANGE_DIRECTION, payload: direction});
 		}

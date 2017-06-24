@@ -29,5 +29,5 @@ class App extends Component {
 	}
 }
 
-export default connect((state) => state.game)(App);
+export default connect((state) => state)(App);
 export {App};

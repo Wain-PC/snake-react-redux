@@ -76,7 +76,7 @@ describe('Game', () => {
 
 		beforeEach(() => {
 			dispatch = jest.fn();
-			getState = () => ({ game: initialState });
+			getState = () => (initialState);
 		});
 
 		describe('init', () => {
@@ -137,7 +137,7 @@ describe('Game', () => {
 			it("should call appropriate actions (when snake is available)", () => {
 				//First, init the snake
 				const initialStateWithSnake = reducer(initialState, { type: CREATE_SNAKE });
-				const getState = () => ({ game: initialStateWithSnake });
+				const getState = () => initialStateWithSnake;
 
 				const fn = move()(dispatch, getState);
 				expect(dispatch.mock.calls[0][0]).toEqual({ type: MOVE_SNAKE, payload: false });
