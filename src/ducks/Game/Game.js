@@ -1,6 +1,6 @@
 // Game.js
-import * as utils from '../../utils/utils';
-import {DIRECTIONS} from '../../utils/constants';
+import * as utils from "../../utils/utils";
+import {DIRECTIONS} from "../../utils/constants";
 
 // Actions
 export const START = 'snake/game/START';
@@ -24,7 +24,7 @@ export default function reducer(state = defaultState, action = {}) {
 	let newState;
 	switch (action.type) {
 		case START: {
-			newState = Object.assign({}, state, {started: true});
+			newState = Object.assign({}, state, { started: true });
 			break;
 		}
 		case STOP: {
@@ -32,15 +32,15 @@ export default function reducer(state = defaultState, action = {}) {
 			break;
 		}
 		case CREATE_SNAKE: {
-			newState = Object.assign({}, state, {snake: utils.createSnake(state.size, state.snakeSize)});
+			newState = Object.assign({}, state, { snake: utils.createSnake(state.size, state.snakeSize) });
 			break;
 		}
 		case SPAWN_FOOD: {
-			newState = Object.assign({}, state, {food: utils.spawnFood(state.size), score: state.score + 1});
+			newState = Object.assign({}, state, { food: utils.spawnFood(state.size), score: state.score + 1 });
 			break;
 		}
 		case CHANGE_DIRECTION: {
-			newState = Object.assign({}, state, {bufferedDirection: action.payload});
+			newState = Object.assign({}, state, { bufferedDirection: action.payload });
 			break;
 		}
 		case MOVE_SNAKE: {
@@ -60,7 +60,7 @@ export default function reducer(state = defaultState, action = {}) {
 export function start() {
 	return (dispatch, getState) => {
 		//Dispatch start
-		dispatch({type: START});
+		dispatch({ type: START });
 		//Run main cycle until the game has been stopped
 		const run = () => {
 			setTimeout(() => {
@@ -77,16 +77,13 @@ export function start() {
 
 export function init() {
 	return (dispatch) => {
-		dispatch({type: CREATE_SNAKE});
-		dispatch({type: SPAWN_FOOD});
+		dispatch({ type: CREATE_SNAKE });
+		dispatch({ type: SPAWN_FOOD });
 	};
 }
 
 export function stop() {
-	return (dispatch) => {
-		dispatch({type: STOP});
-		dispatch(init());
-	}
+	return { type: STOP }
 }
 
 export function move() {
@@ -94,9 +91,9 @@ export function move() {
 		const state = getState();
 		if (utils.canPerformMove(state.size, state.snake, state.bufferedDirection)) {
 			const willEat = utils.willEatFood(state.snake, state.bufferedDirection, state.food);
-			dispatch({type: MOVE_SNAKE, payload: willEat});
+			dispatch({ type: MOVE_SNAKE, payload: willEat });
 			if (willEat) {
-				dispatch({type: SPAWN_FOOD});
+				dispatch({ type: SPAWN_FOOD });
 			}
 		}
 		else {
@@ -110,7 +107,7 @@ export function changeDirection(direction) {
 	return (dispatch, getState) => {
 		const state = getState();
 		if (utils.canChangeDirection(direction, state.direction)) {
-			return dispatch({type: CHANGE_DIRECTION, payload: direction});
+			return dispatch({ type: CHANGE_DIRECTION, payload: direction });
 		}
 	}
 }

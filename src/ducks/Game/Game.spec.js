@@ -35,6 +35,10 @@ describe('Game', () => {
 			expect(reducer).toBeInstanceOf(Function);
 		});
 
+		it('should return initial state when called without parameters (or with invalid ones)', () => {
+			expect(reducer()).toEqual(initialState);
+		});
+
 		it('should handle "START" action correctly', () => {
 			expect(reducer(initialState, { type: START })).toEqual(extend({ started: true }));
 		});
@@ -96,6 +100,13 @@ describe('Game', () => {
 		});
 
 		describe('start', () => {
+			beforeEach(() => jest.useFakeTimers());
+
+			//Call stop() after each start call to prevent the game from updating state periodically
+			afterEach(() => {
+				jest.clearAllTimers();
+			});
+
 			it('should be a function', () => {
 				expect(start).toBeInstanceOf(Function);
 			});
@@ -108,6 +119,23 @@ describe('Game', () => {
 				const fn = start()(dispatch, getState);
 				expect(dispatch.mock.calls[0][0]).toEqual({ type: START });
 			});
+
+			it("should start move cycle timer with 500ms timeout", () => {
+				const fn = start()(dispatch, () => Object.assign({}, getState(), { started: true }));
+				expect(setTimeout.mock.calls[0][1]).toBe(500);
+				//It should call move action instantly, then each 500ms
+				expect(setTimeout.mock.calls.length).toBe(1);
+				jest.runTimersToTime(500);
+				expect(setTimeout.mock.calls.length).toBe(2);
+				jest.runTimersToTime(500);
+				expect(setTimeout.mock.calls.length).toBe(3);
+			});
+
+			it("should NOT start move cycle timer when the game is not started", () => {
+				const fn = start()(dispatch, getState);
+				jest.runTimersToTime(2000);
+				expect(dispatch.mock.calls.length).toBe(1);
+			});
 		});
 
 		describe('stop', () => {
@@ -115,13 +143,9 @@ describe('Game', () => {
 				expect(stop).toBeInstanceOf(Function);
 			});
 
-			it('should return a function', () => {
-				expect(stop()).toBeInstanceOf(Function);
-			});
-
-			it("should call appropriate actions", () => {
-				const fn = stop()(dispatch, getState);
-				expect(dispatch.mock.calls[0][0]).toEqual({ type: STOP });
+			it('should return an action object', () => {
+				expect(stop()).toBeInstanceOf(Object);
+				expect(stop()).toEqual({ type: STOP });
 			});
 		});
 
@@ -142,6 +166,42 @@ describe('Game', () => {
 				const fn = move()(dispatch, getState);
 				expect(dispatch.mock.calls[0][0]).toEqual({ type: MOVE_SNAKE, payload: false });
 			});
+
+			it("should call for food spawn if snake is going to eat ", () => {
+				//First, init the snake
+				const initialStateWithSnakeAndFood = reducer(initialState, { type: CREATE_SNAKE });
+				//Add food manually near the head of the snake
+				initialStateWithSnakeAndFood.food = {
+					x: initialStateWithSnakeAndFood.snake[0].x,
+					y: initialStateWithSnakeAndFood.snake[0].y - 1
+				};
+				const getState = () => initialStateWithSnakeAndFood;
+
+				const fn = move()(dispatch, getState);
+				expect(dispatch.mock.calls[0][0]).toEqual({ type: MOVE_SNAKE, payload: true });
+				expect(dispatch.mock.calls[1][0]).toEqual({ type: SPAWN_FOOD });
+			});
+
+			it("should dispatch `stop` action if the snake is going to die", () => {
+				const getState = () => Object.assign({}, initialState, {
+					snake: [
+						{
+							x: 5,
+							y: 0
+						},
+						{
+							x: 5,
+							y: 1
+						},
+						{
+							x: 5,
+							y: 2
+						}]
+				});
+
+				const fn = move()(dispatch, getState);
+				expect(dispatch.mock.calls[0][0]).toEqual({ type: STOP });
+			});
 		});
 
 		describe('changeDirection', () => {
@@ -153,10 +213,14 @@ describe('Game', () => {
 				expect(changeDirection()).toBeInstanceOf(Function);
 			});
 
-			//TODO: doesn't work as expected
-			it("should call appropriate actions", () => {
+			it("should dispatch CHANGE_DIRECTION action if this is possible for the snake to turn", () => {
 				const fn = changeDirection(DIRECTIONS.LEFT)(dispatch, getState);
 				expect(dispatch.mock.calls[0][0]).toEqual({ type: CHANGE_DIRECTION, payload: DIRECTIONS.LEFT });
+			});
+
+			it("should not dispatch CHANGE_DIRECTION action if it's not possible for the snake to turn (e.g., opposite direction)", () => {
+				const fn = changeDirection(DIRECTIONS.DOWN)(dispatch, getState);
+				expect(dispatch.mock.calls.length).toBe(0);
 			});
 		});
 
