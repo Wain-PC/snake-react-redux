@@ -213,4 +213,23 @@ describe('utils', () => {
 			expect(utils.willEatFood(snake, DIRECTIONS.UP, { x: snake[0].x, y: snake[0].y - 1 })).toBe(true);
 		});
 	});
+
+	describe('getDirectionFromKey', () => {
+		it('should return null with no event', () => {
+			expect(utils.getDirectionFromKey()).toBe(null);
+		});
+
+		it('should return null with incorrect keyCode', () => {
+			expect(utils.getDirectionFromKey({keyCode: 42})).toBe(null);
+		});
+
+		it('should return correct direction when provided with valid keyCode', () => {
+			expect(utils.getDirectionFromKey({keyCode: 37})).toBe(DIRECTIONS.LEFT);
+			expect(utils.getDirectionFromKey({keyCode: 38})).toBe(DIRECTIONS.UP);
+			expect(utils.getDirectionFromKey({keyCode: 39})).toBe(DIRECTIONS.RIGHT);
+			expect(utils.getDirectionFromKey({keyCode: 40})).toBe(DIRECTIONS.DOWN);
+		});
+
+
+	});
 });

@@ -98,3 +98,18 @@ export const willEatFood = (snake, direction, food) => {
 	const newHead = getNewSnakeHead(snake, direction);
 	return food ? compareCoords(newHead, food) : false;
 };
+
+
+export const getDirectionFromKey = (e) => {
+	switch (e && e.keyCode) {
+		case 37:
+			return DIRECTIONS.LEFT;
+		case 38:
+			return DIRECTIONS.UP;
+		case 39:
+			return DIRECTIONS.RIGHT;
+		case 40:
+			return DIRECTIONS.DOWN;
+	}
+	return null;
+};

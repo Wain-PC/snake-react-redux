@@ -4,19 +4,26 @@ import './App.css';
 import Field from './components/Field';
 import {start, stop, changeDirection, init} from './ducks/Game/Game';
 import Button from './components/Button';
-import useKeyboard from './utils/keyboard';
+import {getDirectionFromKey} from './utils/utils';
+
+let onKeyDown = function (e) {
+	const direction = getDirectionFromKey(e);
+	if (direction !== null) {
+		this.props.dispatch(changeDirection(direction));
+	}
+};
 
 class App extends Component {
 
 	componentWillMount() {
 		this.props.dispatch(init());
-		useKeyboard((d) => this.props.dispatch(changeDirection(d)));
+		onKeyDown = onKeyDown.bind(this);
 	}
 
 	render() {
 		const {size, snake, food, score, dispatch, started} = this.props;
 		return (
-			<div className="App">
+			<div className="App" onKeyDown={onKeyDown} tabIndex="0">
 				<div className="App-header">Snake Game</div>
 				<div>Score: {score}</div>
 				<Field size={size} snake={snake} food={food}/>
