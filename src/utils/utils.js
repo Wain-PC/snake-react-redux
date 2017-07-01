@@ -7,16 +7,16 @@ const getNewSnakeHead = (snake, direction) => {
 	switch (direction) {
 		case DIRECTIONS.UP:
 		default: {
-			return { x: head.x, y: head.y - 1 };
+			return {x: head.x, y: head.y - 1};
 		}
 		case DIRECTIONS.DOWN: {
-			return { x: head.x, y: head.y + 1 };
+			return {x: head.x, y: head.y + 1};
 		}
 		case DIRECTIONS.LEFT: {
-			return { x: head.x - 1, y: head.y };
+			return {x: head.x - 1, y: head.y};
 		}
 		case DIRECTIONS.RIGHT: {
-			return { x: head.x + 1, y: head.y };
+			return {x: head.x + 1, y: head.y};
 		}
 	}
 };
@@ -39,7 +39,7 @@ const createField = (size) => {
 export const createSnake = (fieldSize, length = 1, x = Math.floor(fieldSize / 2), y = Math.floor(fieldSize / 2)) => {
 	let snakeCoords = [];
 	for (let i = 0; i < length; i++) {
-		snakeCoords.push({ x, y: y + i });
+		snakeCoords.push({x, y: y + i});
 	}
 	return snakeCoords;
 };
@@ -110,6 +110,7 @@ export const getDirectionFromKey = (e) => {
 			return DIRECTIONS.RIGHT;
 		case 40:
 			return DIRECTIONS.DOWN;
+		default:
+			return null;
 	}
-	return null;
 };
