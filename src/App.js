@@ -18,12 +18,18 @@ class App extends Component {
 	componentWillMount() {
 		this.props.dispatch(init());
 		onKeyDown = onKeyDown.bind(this);
+		document.addEventListener('keydown', onKeyDown);
+
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener('keydown', onKeyDown);
 	}
 
 	render() {
 		const {size, snake, food, score, dispatch, started} = this.props;
 		return (
-			<div className="App" onKeyDown={onKeyDown} tabIndex="0">
+			<div className="App" tabIndex="0">
 				<div className="App-header">Snake Game</div>
 				<div>Score: {score}</div>
 				<Field size={size} snake={snake} food={food}/>
