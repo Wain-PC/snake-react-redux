@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import './App.css';
 import Field from './components/Field';
-import {start, stop, changeDirection, init} from './ducks/Game/Game';
+import {start, stop, changeDirection} from './ducks/Game/Game';
 import Button from './components/Button';
 import {getDirectionFromKey} from './utils/utils';
 
@@ -16,7 +16,6 @@ let onKeyDown = function (e) {
 class App extends Component {
 
 	componentWillMount() {
-		this.props.dispatch(init());
 		onKeyDown = onKeyDown.bind(this);
 		document.addEventListener('keydown', onKeyDown);
 
@@ -29,7 +28,7 @@ class App extends Component {
 	render() {
 		const {size, snake, food, score, dispatch, started} = this.props;
 		return (
-			<div className="App" tabIndex="0">
+			<div className="App">
 				<div className="App-header">Snake Game</div>
 				<div>Score: {score}</div>
 				<Field size={size} snake={snake} food={food}/>
