@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Cell from '../Cell';
 import {updateField} from '../../utils/utils';
 
@@ -17,5 +18,19 @@ const Field = ({size, snake, food}) => {
 	//Let's create a field
 	return <div className="Field">{rows}</div>
 };
+
+Field.propTypes = {
+	size: PropTypes.number.isRequired,
+	snake: PropTypes.arrayOf(PropTypes.shape({
+		x: PropTypes.number,
+		y: PropTypes.number
+	})),
+	food: PropTypes.shape({
+		x: PropTypes.number,
+		y: PropTypes.number
+	})
+};
+
+
 
 export default Field;

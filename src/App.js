@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import './App.css';
 import Field from './components/Field';
 import {start, stop, changeDirection} from './ducks/Game/Game';
@@ -40,6 +41,21 @@ class App extends Component {
 		);
 	}
 }
+
+App.propTypes = {
+	size: PropTypes.number.isRequired,
+	snake: PropTypes.arrayOf(PropTypes.shape({
+		x: PropTypes.number,
+		y: PropTypes.number
+	})),
+	food: PropTypes.shape({
+		x: PropTypes.number,
+		y: PropTypes.number
+	}),
+	score: PropTypes.number.isRequired,
+	dispatch:PropTypes.func.isRequired,
+	started: PropTypes.bool.isRequired
+};
 
 export default connect((state) => state)(App);
 export {App};

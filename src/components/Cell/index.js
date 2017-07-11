@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {TYPES} from '../../utils/constants';
 
 const Cell = ({value}) => {
@@ -11,4 +12,9 @@ const Cell = ({value}) => {
 	}
 	return <div className="Cell" style={{backgroundColor: color}}></div>
 };
+
+Cell.propTypes = {
+	value: PropTypes.oneOf([0,1,2])
+};
+
 export default Cell;
